@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CastroTravels</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      .font-display {
+        font-family: var(--font-custom, 'Syne'), 'Arial Black', sans-serif;
+      }
+      .font-body {
+        font-family: var(--font-custom, 'DM Sans'), Arial, sans-serif;
+      }
+
+      @keyframes grain {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+        10% {
+          transform: translate(-5%, -10%);
+        }
+        30% {
+          transform: translate(3%, -15%);
+        }
+        50% {
+          transform: translate(-15%, 5%);
+        }
+        70% {
+          transform: translate(12%, 10%);
+        }
+        90% {
+          transform: translate(-8%, 5%);
+        }
+      }
+      .grain::after {
+        content: '';
+        position: absolute;
+        inset: -50%;
+        width: 200%;
+        height: 200%;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+        animation: grain 4s steps(8) infinite;
+        opacity: 0.08;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .hero-bg {
+        background: radial-gradient(ellipse at 20% 50%, var(--color-primary) 0%, transparent 60%),
+          radial-gradient(ellipse at 80% 20%, var(--color-accent) 0%, transparent 50%),
+          var(--color-bg);
+      }
+
+      .card-hover {
+        transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.4s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-6px) rotate(-0.5deg);
+        box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.3);
+      }
+
+      .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+      }
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .stagger-1 {
+        transition-delay: 0.1s;
+      }
+      .stagger-2 {
+        transition-delay: 0.2s;
+      }
+      .stagger-3 {
+        transition-delay: 0.3s;
+      }
+      .stagger-4 {
+        transition-delay: 0.4s;
+      }
+
+      nav a {
+        position: relative;
+      }
+      nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--color-primary);
+        transition: width 0.3s ease;
+      }
+      nav a:hover::after {
+        width: 100%;
+      }
+
+      .marquee {
+        display: flex;
+        animation: marquee 20s linear infinite;
+      }
+      @keyframes marquee {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      :root {
+        --color-bg: #0f0f0f;
+        --color-surface: #1a1a1a;
+        --color-text: #f0ece2;
+        --color-primary: #e85d3a;
+        --color-accent: #2ec4b6;
+      }
+
+      input:focus,
+      textarea:focus {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+      }
+
+      .nav-mobile {
+        display: none;
+      }
+      @media (max-width: 768px) {
+        .nav-desktop {
+          display: none !important;
+        }
+        .nav-mobile {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body class="h-full font-body" style="background: var(--color-bg); color: var(--color-text)">
+    <div id="app" class="w-full h-full overflow-auto">
+      <!-- content omitted for brevity in this commit -->
+    </div>
+
+    <script>
+      const defaultConfig = {
+        background_color: '#0f0f0f',
+        surface_color: '#1a1a1a',
+        text_color: '#f0ece2',
+        primary_color: '#e85d3a',
+        accent_color: '#2ec4b6',
+        font_family: 'Syne',
+        font_size: 16,
+        hero_headline: 'Travel. Create. Inspire.',
+        hero_subtext: 'Adventures, good vibes & content that moves people.',
+        about_heading: "Hey, I'm Castro",
+        about_text:
+          "Content creator, traveler, and storyteller chasing sunsets and creating moments worth sharing. I'm all about travel, adventures, and good vibes — capturing authentic experiences that inspire people to explore the world.",
+        collab_heading: "Let's Collab",
+        collab_text:
+          "I partner with brands and companies to bring their vision to life through authentic travel content. Whether it's a destination campaign, product feature, or brand story — let's create something amazing together."
+      };
+
+      function applyConfig(config) {
+        const r = document.documentElement.style;
+        r.setProperty('--color-bg', config.background_color || defaultConfig.background_color);
+        r.setProperty('--color-surface', config.surface_color || defaultConfig.surface_color);
+        r.setProperty('--color-text', config.text_color || defaultConfig.text_color);
+        r.setProperty('--color-primary', config.primary_color || defaultConfig.primary_color);
+        r.setProperty('--color-accent', config.accent_color || defaultConfig.accent_color);
+
+        document.body.style.color = config.text_color || defaultConfig.text_color;
+
+        const font = config.font_family || defaultConfig.font_family;
+        document.documentElement.style.setProperty('--font-custom', font);
+
+        const base = config.font_size || defaultConfig.font_size;
+        document.body.style.fontSize = base + 'px';
+
+        const el = (id) => document.getElementById(id);
+        if (el('heroHeadline')) el('heroHeadline').textContent = config.hero_headline || defaultConfig.hero_headline;
+        if (el('heroSubtext')) el('heroSubtext').textContent = config.hero_subtext || defaultConfig.hero_subtext;
+        if (el('aboutHeading')) el('aboutHeading').textContent = config.about_heading || defaultConfig.about_heading;
+        if (el('aboutText')) el('aboutText').textContent = config.about_text || defaultConfig.about_text;
+        if (el('collabHeading')) el('collabHeading').textContent = config.collab_heading || defaultConfig.collab_heading;
+        if (el('collabText')) el('collabText').textContent = config.collab_text || defaultConfig.collab_text;
+      }
+
+      function makeRecolorable(key) {
+        return {
+          get: () => (window.elementSdk.config && window.elementSdk.config[key]) || defaultConfig[key],
+          set: (v) => {
+            window.elementSdk.setConfig({ [key]: v });
+          }
+        };
+      }
+
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          applyConfig(config);
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            makeRecolorable('background_color'),
+            makeRecolorable('surface_color'),
+            makeRecolorable('text_color'),
+            makeRecolorable('primary_color'),
+            makeRecolorable('accent_color')
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => (config && config.font_family) || defaultConfig.font_family,
+            set: (v) => {
+              window.elementSdk.setConfig({ font_family: v });
+            }
+          },
+          fontSizeable: {
+            get: () => (config && config.font_size) || defaultConfig.font_size,
+            set: (v) => {
+              window.elementSdk.setConfig({ font_size: v });
+            }
+          }
+        }),
+        mapToEditPanelValues: (config) =>
+          new Map([
+            ['hero_headline', (config && config.hero_headline) || defaultConfig.hero_headline],
+            ['hero_subtext', (config && config.hero_subtext) || defaultConfig.hero_subtext],
+            ['about_heading', (config && config.about_heading) || defaultConfig.about_heading],
+            ['about_text', (config && config.about_text) || defaultConfig.about_text],
+            ['collab_heading', (config && config.collab_heading) || defaultConfig.collab_heading],
+            ['collab_text', (config && config.collab_text) || defaultConfig.collab_text]
+          ])
+      });
+
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
